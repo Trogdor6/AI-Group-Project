@@ -29,5 +29,9 @@ public class gunBehavior : MonoBehaviour
             bulletManager.singleton.getBullet(new Vector3(transform.position.x, transform.position.y, 0));
         }
 
+        
+
     }
+
+
 }

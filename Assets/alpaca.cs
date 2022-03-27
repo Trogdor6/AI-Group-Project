@@ -9,7 +9,14 @@ public class alpaca : MonoBehaviour
     public GameObject particles;
     
     public GameObject Alpaca;
+
     bool gotHit = false;
+
+    public bool AI = false;
+    public bool Testing = true;
+    private float AIBulletOffSet = 0.5f;
+    private int AI_Decision = 0;
+
 
     // Start is called before the first frame update
     void Start()
@@ -20,38 +27,126 @@ public class alpaca : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        switch (gotHit)
-        {
-            case false:
-                if (Input.GetKey(KeyCode.W))
-                {
-                    Alpaca.transform.position += Vector3.up * speed * Time.deltaTime;
-                }
-                else if (Input.GetKey(KeyCode.S))
-                {
-                    Alpaca.transform.position += Vector3.down * speed * Time.deltaTime;
-                }
+        if (!AI) { 
 
-                //Don't let the alpaca go off the screen
-                Vector3 pos = Camera.main.WorldToViewportPoint(Alpaca.gameObject.transform.position);
-                pos.y = Mathf.Clamp(pos.y, 0.05f, 0.95f);
-                Alpaca.gameObject.transform.position = Camera.main.ViewportToWorldPoint(pos);
-                break;
+            switch (gotHit)
+            {
+                case false:
+                    if (Input.GetKey(KeyCode.W))
+                    {
+                        Alpaca.transform.position += Vector3.up * speed * Time.deltaTime;
+                    }
+                    else if (Input.GetKey(KeyCode.S))
+                    {
+                        Alpaca.transform.position += Vector3.down * speed * Time.deltaTime;
+                    }
+                    else if (Input.GetKeyDown("space"))
+                    {
+                        bulletManager.singleton.getBullet(new Vector3(Alpaca.gameObject.transform.position.x + AIBulletOffSet, Alpaca.gameObject.transform.position.y, 0));
+                    }
+
+                    //Don't let the alpaca go off the screen
+                    Vector3 pos = Camera.main.WorldToViewportPoint(Alpaca.gameObject.transform.position);
+                    pos.y = Mathf.Clamp(pos.y, 0.05f, 0.95f);
+                    Alpaca.gameObject.transform.position = Camera.main.ViewportToWorldPoint(pos);
+                    break;
+            }
+
         }
-       
+        else
+        {
+
+            switch (gotHit)
+            {
+                case false:
+
+                    //Calculate AI input
+                    AIScanScene();
+
+                    //AI Deciding Movement
+                    AIMovement(0);
+
+                    //Don't let the alpaca go off the screen
+                    Vector3 pos = Camera.main.WorldToViewportPoint(Alpaca.gameObject.transform.position);
+                    pos.y = Mathf.Clamp(pos.y, 0.05f, 0.95f);
+                    Alpaca.gameObject.transform.position = Camera.main.ViewportToWorldPoint(pos);
+
+
+                    //AI Deciding Shooting
+                    AIShoot(1);
+
+                    break;
+
+                   
+            }
+
+
+        }
     }
+
+    public void AIScanScene()
+    {
+
+    }
+
+
+    public void AIMovement(int input)
+    {
+        //Input == 0 // Up
+
+        //Input == 1 // Nothing
+
+        //Input == 2 // Down
+
+        switch (input)
+        {
+            case 0:
+                Alpaca.transform.position += Vector3.up * speed * Time.deltaTime;
+                break;
+            case 1:
+                break;
+            case 2:
+                Alpaca.transform.position += Vector3.down * speed * Time.deltaTime;
+                break;
+
+        }
+
+    }
+
+    public void AIShoot(int input)
+    {
+
+        //if Input = 1 then shoot
+
+        //Some choice to shoot
+
+        if (input == 1)
+        { //Shoot
+            bulletManager.singleton.getBullet(new Vector3(Alpaca.gameObject.transform.position.x + AIBulletOffSet, Alpaca.gameObject.transform.position.y, 0));
+        }
+        else
+        {
+
+        }
+    }
+
+
     public void playerDies()
     {
-        if (gotHit != true)
-        {
-            //Play animation
-            particles.GetComponent<ParticleSystem>().Play();
-            //Now block the thing
-            gameObject.GetComponent<SpriteRenderer>().enabled = false;
-            gameObject.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().enabled = false;
-            points.singleton.stopTime();
-            tryAgain.singleton.bringUIDown();
+        if (!Testing) {
+
+            if (gotHit != true)
+            {
+                //Play animation
+                particles.GetComponent<ParticleSystem>().Play();
+                //Now block the thing
+                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                gameObject.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().enabled = false;
+                points.singleton.stopTime();
+                tryAgain.singleton.bringUIDown();
+            }
+            gotHit = true;
+
         }
-        gotHit = true;
     }
 }
