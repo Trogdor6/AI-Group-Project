@@ -5,17 +5,17 @@ using UnityEngine;
 public class AI_Scanner : MonoBehaviour
 {
 
-    public Queue<GameObject> incoming;
-    public Stack<int> LastDecision;
+    public Queue<GameObject> incoming; //Queue of incoming walls
+    
 
-    public alpaca AGENT;
+    public alpaca AGENT; // The AI Agent
 
-    bool DQ = false;
+    bool DQ = false; 
 
-    float rewardAmount = 0.05f;
-    float rewardMultiplier = 3.0f;
+    float rewardAmount = 0.05f;    //How much the AI changes per Interaction
+    float rewardMultiplier = 3.0f;  //A reward for picking the good option.
 
-    public enum Gaps { TOP, BOT, BOTH }
+  
 
     // Start is called before the first frame update
     void Start()
@@ -41,19 +41,19 @@ public class AI_Scanner : MonoBehaviour
         }
     }
 
-    public void addToQueue(GameObject i)
+    public void addToQueue(GameObject i) //Adds Walls to the Queue
     {
         incoming.Enqueue(i);
         //AGENT.AITakeAction();
     }
 
-    public void removeFromQueue()
+    public void removeFromQueue() //Removes Walls from the queue
     {
         incoming.Dequeue();
         
     }
 
-    void OnTriggerEnter2D(Collider2D collision) //Add incoming walls to queue
+    void OnTriggerEnter2D(Collider2D collision) //Add incoming walls to queue when they enter the scene
     {
         if(collision.gameObject.tag != "Player")
         {
@@ -72,6 +72,9 @@ public class AI_Scanner : MonoBehaviour
     {
         string wallType = incoming.Peek().gameObject.name;
 
+
+        //This large chunk of code, checks whether the AI was hit recently, (i.e the wall has passed the AI)
+        //if not, it rewards the AI for choosing a good option for that specific wall type. Otherwise it gives a penalty.
 
         if (!AGENT.AITagged()) // We didn't get Hit
         {
@@ -243,10 +246,12 @@ public class AI_Scanner : MonoBehaviour
         }
 
        
+        // The Agent is now considered 'not hit' and can calculate it's next move.
 
         AGENT.resetChoice();
 
 
+        //Remove the passed Wall from the queue as it is no longer needed.
 
         incoming.Dequeue();
         //Debug.Log("Dequeued");
@@ -272,7 +277,7 @@ public class AI_Scanner : MonoBehaviour
         //Debug.Log(PlayerPrefs.GetFloat("Above_MoveUp"));
     }
 
-    public void deleteProbabilities()
+    public void deleteProbabilities() //Completely Erases All Learned Data
     {
         PlayerPrefs.DeleteAll();
 
@@ -318,32 +323,15 @@ public class AI_Scanner : MonoBehaviour
 
             return 3;
 
-        }
+        } //Enemy is not implemented
         else // WALLS
         {
             if (incoming.Count > 0)
             {
-                GameObject wall = incoming.Peek();
+                GameObject wall = incoming.Peek(); 
 
-                float wallMaxY = wall.gameObject.transform.position.y + wall.gameObject.transform.localScale.y / 2;
-                float wallMinY = wall.gameObject.transform.position.y - wall.gameObject.transform.localScale.y / 2;
 
-                //float TopGap = 5.0f - wallMaxY;
-                //float BotGap = -4.8f - wallMinY;
-
-                //if (TopGap > .5)
-                //{
-                //    Debug.Log("Top Gap");
-                //}
-                //else if (BotGap < -4.3)
-                //{
-                //    Debug.Log("Bot Gap");
-                //}
-                //else if (TopGap > .5 && BotGap < -4.3)
-                //{
-                //    Debug.Log("Both");
-                //
-                //}
+                // The AI considers the type of wall that is approaching and uses it's appropriate probabilities.
 
                 if(wall.name == "WallA(Clone)")
                 {
@@ -391,8 +379,12 @@ public class AI_Scanner : MonoBehaviour
     }// Calculate Decisions.. END
 
 
-    public int MakeChoice(string wallType)
+    public int MakeChoice(string wallType) 
     {
+
+        //This function takes the percentages of the appropriate wall and returns an Action for the AI to take.
+        // It returns 0 for UP and 2 for DOWN
+
         float rNum = Random.Range(0.0f, 100.0f);
 
         if (wallType == "A" && rNum < PlayerPrefs.GetFloat("WallA_MoveUp") * 100)
@@ -405,6 +397,8 @@ public class AI_Scanner : MonoBehaviour
             return 2;
         }
 
+
+
         if (wallType == "B" && rNum < PlayerPrefs.GetFloat("WallB_MoveUp") * 100)
         {
 
@@ -414,6 +408,8 @@ public class AI_Scanner : MonoBehaviour
         {
             return 2;
         }
+
+
 
         if (wallType == "C" && rNum < PlayerPrefs.GetFloat("WallC_MoveUp") * 100)
         {
@@ -425,6 +421,8 @@ public class AI_Scanner : MonoBehaviour
             return 2;
         }
 
+
+
         if (wallType == "D" && rNum < PlayerPrefs.GetFloat("WallD_MoveUp") * 100)
         {
 
@@ -434,6 +432,8 @@ public class AI_Scanner : MonoBehaviour
         {
             return 2;
         }
+
+
 
         if (wallType == "E" && rNum < PlayerPrefs.GetFloat("WallE_MoveUp") * 100)
         {
@@ -450,7 +450,7 @@ public class AI_Scanner : MonoBehaviour
         return 3;
     }
 
-    public bool checkQueue()
+    public bool checkQueue() //Check if anything is in the queue. (No walls?)
     {
         if (incoming.Count > 0)
         {

@@ -35,7 +35,7 @@ public class alpaca : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!AI) { 
+        if (!AI) {  // PLAYER CONTROLS
 
             switch (gotHit)
             {
@@ -48,7 +48,7 @@ public class alpaca : MonoBehaviour
                     {
                         Alpaca.transform.position += Vector3.down * speed * Time.deltaTime;
                     }
-                    else if (Input.GetKeyDown("space"))
+                    else if (Input.GetKeyDown("space")) 
                     {
                         bulletManager.singleton.getBullet(new Vector3(Alpaca.gameObject.transform.position.x + AIBulletOffSet, Alpaca.gameObject.transform.position.y, 0));
                     }
@@ -72,7 +72,7 @@ public class alpaca : MonoBehaviour
                     //Calculate AI input
                    // if (!choseInput && Scanner.checkQueue())
                    // {
-                        input = Scanner.CalculateDecision();
+                        input = Scanner.CalculateDecision(); //THIS IS WHERE THE AI DECIDES WHAT ACTION TO TAKE
                         //choseInput = true;
                     //}
 
@@ -98,14 +98,14 @@ public class alpaca : MonoBehaviour
         }
     }
 
-   public void AITakeAction()
+   public void AITakeAction() // Force AI to calculate an Action
     {
         input = Scanner.CalculateDecision();
         AIMovement(input);
     }
 
 
-    public void AIMovement(int input)
+    public void AIMovement(int input) //Allows the AI to move
     {
         //Input == 0 // Up
 
@@ -133,7 +133,7 @@ public class alpaca : MonoBehaviour
 
     }
 
-    public void AIShoot(int input)
+    public void AIShoot(int input) //Framework for AI to shoot
     {
 
         //if Input = 1 then shoot
@@ -151,7 +151,7 @@ public class alpaca : MonoBehaviour
     }
 
 
-    public void playerDies()
+    public void playerDies() // When The AI gets hit by a Wall, repurposed for the AI.
     {
         if (!Testing) {
 
@@ -176,18 +176,18 @@ public class alpaca : MonoBehaviour
         }
     }
 
-    public void resetChoice()
+    public void resetChoice() //Re-enables the AI after being hit or after a wall disappears.
     {
         choseInput = false;
         gotHit = false;
     }
 
-    public bool AITagged()
+    public bool AITagged() //See whether the AI crashed recently
     {
         return gotHit;
     }
 
-    public bool GetAIChoice()
+    public bool GetAIChoice() //What was the AI's last choice?
     {
         return UP;
     }
