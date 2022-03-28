@@ -23,11 +23,11 @@ public class gunBehavior : MonoBehaviour
         transform.position = gameObject.transform.parent.gameObject.transform.position + new Vector3(pointPosM.x, -pointPosM.z, 0);
         transform.LookAt(gameObject.transform.parent.gameObject.transform.position);
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            //fireBullet
-            bulletManager.singleton.getBullet(new Vector3(transform.position.x, transform.position.y, 0));
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    //fireBullet
+        //    bulletManager.singleton.getBullet(new Vector3(transform.position.x, transform.position.y, 0));
+        //}
 
         
 

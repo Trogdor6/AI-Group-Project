@@ -12,8 +12,8 @@ public class AI_Scanner : MonoBehaviour
 
     bool DQ = false;
 
-    float rewardAmount = 0.1f;
-    float rewardMultiplier = 2.0f;
+    float rewardAmount = 0.05f;
+    float rewardMultiplier = 3.0f;
 
     public enum Gaps { TOP, BOT, BOTH }
 
@@ -33,7 +33,7 @@ public class AI_Scanner : MonoBehaviour
         {
             incoming.Dequeue();
             DQ = true;
-            Debug.Log(incoming.Count);
+            //Debug.Log(incoming.Count);
         }
         else
         {
@@ -44,6 +44,7 @@ public class AI_Scanner : MonoBehaviour
     public void addToQueue(GameObject i)
     {
         incoming.Enqueue(i);
+        //AGENT.AITakeAction();
     }
 
     public void removeFromQueue()
@@ -54,12 +55,17 @@ public class AI_Scanner : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision) //Add incoming walls to queue
     {
-        incoming.Enqueue(collision.gameObject);
+        if(collision.gameObject.tag != "Player")
+        {
+            incoming.Enqueue(collision.gameObject);
 
+
+
+           // Debug.Log("Queued", collision.gameObject);
+           // Debug.Log(collision.gameObject);
+
+        }
         
-
-        //Debug.Log("Queued", collision.gameObject);
-        //Debug.Log(collision.gameObject);
     }
 
     void OnTriggerExit2D(Collider2D other)//Remove past walls from queue
@@ -69,7 +75,7 @@ public class AI_Scanner : MonoBehaviour
 
         if (!AGENT.AITagged()) // We didn't get Hit
         {
-            Debug.Log("Passed");
+            print("PASSED: " + wallType);
 
             if (wallType == "WallA(Clone)")
             {
@@ -78,16 +84,17 @@ public class AI_Scanner : MonoBehaviour
                     PlayerPrefs.SetFloat("WallA_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallA_MoveUp") + rewardAmount, 0.00f, 1.00f));
                     PlayerPrefs.Save();
                 }
-                else //DOWN
+                else //DOWN **
                 {
                     PlayerPrefs.SetFloat("WallA_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallA_MoveUp") - (rewardAmount * rewardMultiplier), 0.00f, 1.00f)); //Double Reward
                     PlayerPrefs.Save();
                 }
+                print("A:" + PlayerPrefs.GetFloat("WallA_MoveUp"));
             }
 
             if (wallType == "WallB(Clone)")
             {
-                if (AGENT.GetAIChoice()) // UP
+                if (AGENT.GetAIChoice()) // UP **
                 {
                     PlayerPrefs.SetFloat("WallB_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallB_MoveUp") + (rewardAmount * rewardMultiplier), 0.00f, 1.00f)); //Double Reward
                     PlayerPrefs.Save();
@@ -97,11 +104,12 @@ public class AI_Scanner : MonoBehaviour
                     PlayerPrefs.SetFloat("WallB_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallB_MoveUp") - rewardAmount, 0.00f, 1.00f));
                     PlayerPrefs.Save();
                 }
+                print("B:" + PlayerPrefs.GetFloat("WallB_MoveUp"));
             }
 
             if (wallType == "WallC(Clone)")
             {
-                if (AGENT.GetAIChoice()) // UP
+                if (AGENT.GetAIChoice()) // UP **
                 {
                     PlayerPrefs.SetFloat("WallC_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallC_MoveUp") + (rewardAmount * rewardMultiplier), 0.00f, 1.00f)); //Double Reward
                     PlayerPrefs.Save();
@@ -111,11 +119,13 @@ public class AI_Scanner : MonoBehaviour
                     PlayerPrefs.SetFloat("WallC_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallC_MoveUp") - rewardAmount, 0.00f, 1.00f));
                     PlayerPrefs.Save();
                 }
+
+                print("C:" + PlayerPrefs.GetFloat("WallC_MoveUp"));
             }
 
             if (wallType == "WallD(Clone)")
             {
-                if (AGENT.GetAIChoice()) // UP
+                if (AGENT.GetAIChoice()) // UP **
                 {
                     PlayerPrefs.SetFloat("WallD_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallD_MoveUp") + rewardAmount, 0.00f, 1.00f)); 
                     PlayerPrefs.Save();
@@ -125,6 +135,8 @@ public class AI_Scanner : MonoBehaviour
                     PlayerPrefs.SetFloat("WallD_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallD_MoveUp") - (rewardAmount * rewardMultiplier), 0.00f, 1.00f)); //Double Reward
                     PlayerPrefs.Save();
                 }
+
+                print("D:" + PlayerPrefs.GetFloat("WallD_MoveUp"));
             }
 
             if (wallType == "WallE(Clone)")
@@ -139,68 +151,77 @@ public class AI_Scanner : MonoBehaviour
                     PlayerPrefs.SetFloat("WallE_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallE_MoveUp") - rewardAmount, 0.00f, 1.00f));
                     PlayerPrefs.Save();
                 }
+
+                print("E:" + PlayerPrefs.GetFloat("WallE_MoveUp"));
             }
 
 
         }
         else // We got Hit
         {
-            Debug.Log("Failed");
+            print("FAILED: " + wallType);
 
             if (wallType == "WallA(Clone)")
             {
                 if (AGENT.GetAIChoice()) // UP
-                {
-                    PlayerPrefs.SetFloat("WallA_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallA_MoveUp") - rewardAmount, 0.00f, 1.00f));
+                {   
+                    PlayerPrefs.SetFloat("WallA_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallA_MoveUp") - (rewardAmount * rewardMultiplier), 0.00f, 1.00f)); //PENALTY
                     PlayerPrefs.Save();
                 }
-                else //DOWN
+                else //DOWN **
                 {
-                    PlayerPrefs.SetFloat("WallA_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallA_MoveUp") + (rewardAmount * rewardMultiplier), 0.00f, 1.00f)); //Double Reward
+                    PlayerPrefs.SetFloat("WallA_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallA_MoveUp") + rewardAmount, 0.00f, 1.00f));
                     PlayerPrefs.Save();
                 }
+                print("A:" + PlayerPrefs.GetFloat("WallA_MoveUp"));
             }
 
             if (wallType == "WallB(Clone)")
             {
                 if (AGENT.GetAIChoice()) // UP
                 {
-                    PlayerPrefs.SetFloat("WallB_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallB_MoveUp") - (rewardAmount * rewardMultiplier), 0.00f, 1.00f)); //Double Reward
+                    PlayerPrefs.SetFloat("WallB_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallB_MoveUp") - rewardAmount, 0.00f, 1.00f)); 
                     PlayerPrefs.Save();
                 }
                 else //DOWN
                 {
-                    PlayerPrefs.SetFloat("WallB_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallB_MoveUp") + rewardAmount, 0.00f, 1.00f));
+                    PlayerPrefs.SetFloat("WallB_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallB_MoveUp") + (rewardAmount * rewardMultiplier), 0.00f, 1.00f)); //PENALTY
                     PlayerPrefs.Save();
                 }
+
+                print("B:" + PlayerPrefs.GetFloat("WallB_MoveUp"));
             }
 
             if (wallType == "WallC(Clone)")
             {
                 if (AGENT.GetAIChoice()) // UP
                 {
-                    PlayerPrefs.SetFloat("WallC_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallC_MoveUp") - (rewardAmount * rewardMultiplier), 0.00f, 1.00f)); //Double Reward
+                    PlayerPrefs.SetFloat("WallC_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallC_MoveUp") - rewardAmount, 0.00f, 1.00f)); 
                     PlayerPrefs.Save();
                 }
                 else //DOWN
                 {
-                    PlayerPrefs.SetFloat("WallC_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallC_MoveUp") + rewardAmount, 0.00f, 1.00f));
+                    PlayerPrefs.SetFloat("WallC_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallC_MoveUp") + (rewardAmount * rewardMultiplier), 0.00f, 1.00f)); //PENALTY
                     PlayerPrefs.Save();
                 }
+
+                print("C:" + PlayerPrefs.GetFloat("WallC_MoveUp"));
             }
 
             if (wallType == "WallD(Clone)")
             {
                 if (AGENT.GetAIChoice()) // UP
                 {
-                    PlayerPrefs.SetFloat("WallD_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallD_MoveUp") - rewardAmount, 0.00f, 1.00f));
+                    PlayerPrefs.SetFloat("WallD_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallD_MoveUp") - (rewardAmount * rewardMultiplier), 0.00f, 1.00f)); //Penalty
                     PlayerPrefs.Save();
                 }
                 else //DOWN
                 {
-                    PlayerPrefs.SetFloat("WallD_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallD_MoveUp") + (rewardAmount * rewardMultiplier), 0.00f, 1.00f)); //Double Reward
+                    PlayerPrefs.SetFloat("WallD_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallD_MoveUp") + rewardAmount, 0.00f, 1.00f)); 
                     PlayerPrefs.Save();
                 }
+
+                print("D:" + PlayerPrefs.GetFloat("WallD_MoveUp"));
             }
 
             if (wallType == "WallE(Clone)")
@@ -215,17 +236,17 @@ public class AI_Scanner : MonoBehaviour
                     PlayerPrefs.SetFloat("WallE_MoveUp", Mathf.Clamp(PlayerPrefs.GetFloat("WallE_MoveUp") + rewardAmount, 0.00f, 1.00f));
                     PlayerPrefs.Save();
                 }
+
+                print("E:" + PlayerPrefs.GetFloat("WallE_MoveUp"));
             }
 
         }
 
-        print("A:" + PlayerPrefs.GetFloat("WallA_MoveUp"));
-        print("B:" + PlayerPrefs.GetFloat("WallB_MoveUp"));
-        print("C:" + PlayerPrefs.GetFloat("WallC_MoveUp"));
-        print("D:" + PlayerPrefs.GetFloat("WallD_MoveUp"));
-        print("E:" + PlayerPrefs.GetFloat("WallE_MoveUp"));
+       
 
         AGENT.resetChoice();
+
+
 
         incoming.Dequeue();
         //Debug.Log("Dequeued");
@@ -372,14 +393,14 @@ public class AI_Scanner : MonoBehaviour
 
     public int MakeChoice(string wallType)
     {
-        int rNum = Random.Range(0, 100);
+        float rNum = Random.Range(0.0f, 100.0f);
 
         if (wallType == "A" && rNum < PlayerPrefs.GetFloat("WallA_MoveUp") * 100)
         {
 
             return 0;
         }
-        else
+        else if (wallType == "A" && rNum > PlayerPrefs.GetFloat("WallA_MoveUp") * 100)
         {
             return 2;
         }
@@ -389,7 +410,7 @@ public class AI_Scanner : MonoBehaviour
 
             return 0;
         }
-        else
+        else if (wallType == "B" && rNum > PlayerPrefs.GetFloat("WallB_MoveUp") * 100)
         {
             return 2;
         }
@@ -399,7 +420,7 @@ public class AI_Scanner : MonoBehaviour
 
             return 0;
         }
-        else
+        else if (wallType == "C" && rNum > PlayerPrefs.GetFloat("WallC_MoveUp") * 100)
         {
             return 2;
         }
@@ -409,7 +430,7 @@ public class AI_Scanner : MonoBehaviour
 
             return 0;
         }
-        else
+        else if (wallType == "D" && rNum > PlayerPrefs.GetFloat("WallD_MoveUp") * 100)
         {
             return 2;
         }
@@ -419,7 +440,7 @@ public class AI_Scanner : MonoBehaviour
 
             return 0;
         }
-        else
+        else if (wallType == "E" && rNum > PlayerPrefs.GetFloat("WallE_MoveUp") * 100)
         {
             return 2;
         }
@@ -427,6 +448,16 @@ public class AI_Scanner : MonoBehaviour
 
 
         return 3;
+    }
+
+    public bool checkQueue()
+    {
+        if (incoming.Count > 0)
+        {
+            return true;
+        }
+        else
+            return false;
     }
 
 }

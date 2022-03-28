@@ -17064,7 +17064,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1540525006
 Transform:
   m_ObjectHideFlags: 0
@@ -17356,7 +17356,7 @@ GameObject:
   - component: {fileID: 1746627193}
   m_Layer: 0
   m_Name: Alpaca
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

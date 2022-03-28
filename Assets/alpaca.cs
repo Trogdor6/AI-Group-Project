@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class alpaca : MonoBehaviour
 {
-    float speed = 15;
+    float speed = 10;
 
     public GameObject particles;
     
@@ -64,11 +64,14 @@ public class alpaca : MonoBehaviour
         else // AI CONTROLS
         {
 
-           
-                    
+            //switch (gotHit)
+           // {
+              //  case false:
+
 
                     //Calculate AI input
-                    //if (!choseInput) {
+                   // if (!choseInput && Scanner.checkQueue())
+                   // {
                         input = Scanner.CalculateDecision();
                         //choseInput = true;
                     //}
@@ -85,13 +88,21 @@ public class alpaca : MonoBehaviour
 
                     //AI Deciding Shooting
 
-                   // AIShoot(1);
+                    // AIShoot(1);
+
+                   // break;
+
+           // }
 
 
         }
     }
 
-   
+   public void AITakeAction()
+    {
+        input = Scanner.CalculateDecision();
+        AIMovement(input);
+    }
 
 
     public void AIMovement(int input)
@@ -161,6 +172,7 @@ public class alpaca : MonoBehaviour
             }
             gotHit = true;
 
+            //AITakeAction();
         }
     }
 

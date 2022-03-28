@@ -106,6 +106,8 @@ public class wallManager : MonoBehaviour
                 case 16:
                 case 17:
                 case 18:
+                    GetWalla();
+                    break;
                 case 19:
                 case 20:
                     GetWalld();
@@ -115,6 +117,8 @@ public class wallManager : MonoBehaviour
                 case 23:
                 case 24:
                 case 25:
+                    GetWalld();
+                    break;
                 case 26:
                 case 27:
                 case 28:
