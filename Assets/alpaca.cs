@@ -13,14 +13,17 @@ public class alpaca : MonoBehaviour
     public AI_Scanner Scanner;
 
     bool gotHit = false;
+    bool choseInput = false;
 
     public bool AI = false;
     public bool Testing = true;
+    public bool UP = false;
+
+    int input = 3;
+
     private float AIBulletOffSet = 0.5f;
 
 
-
-    private int AI_Decision = 0;
 
 
     // Start is called before the first frame update
@@ -61,12 +64,14 @@ public class alpaca : MonoBehaviour
         else // AI CONTROLS
         {
 
-            switch (gotHit)
-            {
-                case false:
+           
+                    
 
                     //Calculate AI input
-                   int input = Scanner.CalculateDecision();
+                    //if (!choseInput) {
+                        input = Scanner.CalculateDecision();
+                        //choseInput = true;
+                    //}
 
                     //AI Deciding Movement
 
@@ -81,11 +86,6 @@ public class alpaca : MonoBehaviour
                     //AI Deciding Shooting
 
                    // AIShoot(1);
-
-                    break;
-
-                   
-            }
 
 
         }
@@ -106,12 +106,14 @@ public class alpaca : MonoBehaviour
         {
             case 0: 
                 Alpaca.transform.position += Vector3.up * speed * Time.deltaTime;
+                UP = true;
                 break;
             case 1:
                 bulletManager.singleton.getBullet(new Vector3(Alpaca.gameObject.transform.position.x + AIBulletOffSet, Alpaca.gameObject.transform.position.y, 0));
                 break;
             case 2:
                 Alpaca.transform.position += Vector3.down * speed * Time.deltaTime;
+                UP = false;
                 break;
             case 3:
                 break;
@@ -144,16 +146,37 @@ public class alpaca : MonoBehaviour
 
             if (gotHit != true)
             {
-                //Play animation
-                particles.GetComponent<ParticleSystem>().Play();
-                //Now block the thing
-                gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                gameObject.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().enabled = false;
-                points.singleton.stopTime();
-                tryAgain.singleton.bringUIDown();
+                if (!AI) { 
+                    //Play animation
+                    particles.GetComponent<ParticleSystem>().Play();
+                    //Now block the thing
+                    gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                    gameObject.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().enabled = false;
+                    points.singleton.stopTime();
+                    tryAgain.singleton.bringUIDown();
+                }
+
+
+
             }
             gotHit = true;
 
         }
+    }
+
+    public void resetChoice()
+    {
+        choseInput = false;
+        gotHit = false;
+    }
+
+    public bool AITagged()
+    {
+        return gotHit;
+    }
+
+    public bool GetAIChoice()
+    {
+        return UP;
     }
 }

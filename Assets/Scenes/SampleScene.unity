@@ -5872,7 +5872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53543391994f64e44a8f4d600557b818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alpaca: {fileID: 1746627186}
+  AGENT: {fileID: 1746627187}
 --- !u!4 &681691623
 Transform:
   m_ObjectHideFlags: 0
@@ -16825,7 +16825,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 194.2, y: -1415.7}
+  m_AnchoredPosition: {x: 1395, y: -1415.7}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1427143015
@@ -17242,7 +17242,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 63.5, y: -1415.7}
+  m_AnchoredPosition: {x: 1264.3, y: -1415.7}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1619183370
@@ -17377,7 +17377,8 @@ MonoBehaviour:
   Alpaca: {fileID: 1746627186}
   Scanner: {fileID: 681691622}
   AI: 1
-  Testing: 1
+  Testing: 0
+  UP: 0
 --- !u!212 &1746627188
 SpriteRenderer:
   m_ObjectHideFlags: 0
