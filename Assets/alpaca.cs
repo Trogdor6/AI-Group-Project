@@ -4,17 +4,22 @@ using UnityEngine;
 
 public class alpaca : MonoBehaviour
 {
-    float speed = 10;
+    float speed = 15;
 
     public GameObject particles;
     
     public GameObject Alpaca;
+
+    public AI_Scanner Scanner;
 
     bool gotHit = false;
 
     public bool AI = false;
     public bool Testing = true;
     private float AIBulletOffSet = 0.5f;
+
+
+
     private int AI_Decision = 0;
 
 
@@ -53,7 +58,7 @@ public class alpaca : MonoBehaviour
             }
 
         }
-        else
+        else // AI CONTROLS
         {
 
             switch (gotHit)
@@ -61,10 +66,11 @@ public class alpaca : MonoBehaviour
                 case false:
 
                     //Calculate AI input
-                    AIScanScene();
+                   int input = Scanner.CalculateDecision();
 
                     //AI Deciding Movement
-                    AIMovement(0);
+
+                    AIMovement(input);
 
                     //Don't let the alpaca go off the screen
                     Vector3 pos = Camera.main.WorldToViewportPoint(Alpaca.gameObject.transform.position);
@@ -73,7 +79,8 @@ public class alpaca : MonoBehaviour
 
 
                     //AI Deciding Shooting
-                    AIShoot(1);
+
+                   // AIShoot(1);
 
                     break;
 
@@ -84,10 +91,7 @@ public class alpaca : MonoBehaviour
         }
     }
 
-    public void AIScanScene()
-    {
-
-    }
+   
 
 
     public void AIMovement(int input)
@@ -100,13 +104,16 @@ public class alpaca : MonoBehaviour
 
         switch (input)
         {
-            case 0:
+            case 0: 
                 Alpaca.transform.position += Vector3.up * speed * Time.deltaTime;
                 break;
             case 1:
+                bulletManager.singleton.getBullet(new Vector3(Alpaca.gameObject.transform.position.x + AIBulletOffSet, Alpaca.gameObject.transform.position.y, 0));
                 break;
             case 2:
                 Alpaca.transform.position += Vector3.down * speed * Time.deltaTime;
+                break;
+            case 3:
                 break;
 
         }
@@ -122,7 +129,7 @@ public class alpaca : MonoBehaviour
 
         if (input == 1)
         { //Shoot
-            bulletManager.singleton.getBullet(new Vector3(Alpaca.gameObject.transform.position.x + AIBulletOffSet, Alpaca.gameObject.transform.position.y, 0));
+            
         }
         else
         {

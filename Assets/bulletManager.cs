@@ -19,7 +19,7 @@ public class bulletManager : MonoBehaviour
         Destroy(this);
     }
 
-    public int maxBullets = 3;
+    public int maxBullets = 5;
     static int index = 0;
 
     // Start is called before the first frame update

@@ -18,7 +18,7 @@ public class bullet : MonoBehaviour
 
     bulletState state = bulletState.INACTIVE;
 
-    public float bulletSpeed = 5.0f;
+    public float bulletSpeed = 15.0f;
     public Vector3 dirPos;
 
     // Start is called before the first frame update

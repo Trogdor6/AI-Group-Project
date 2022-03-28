@@ -39,6 +39,9 @@ public class wallManager : MonoBehaviour
     static List<GameObject> wallsHoldere;
     static List<GameObject> wallsHolderMonster;
 
+    //Queue Object for AI to use
+    public AI_Scanner Scanner;
+
     float maxWalls = 6;
     static int indexWallsa = 0;
     static int indexWallsb = 0;
@@ -107,7 +110,7 @@ public class wallManager : MonoBehaviour
                 case 28:
                 case 29:
                 case 30:
-                    GetWallMonster();
+                   // GetWallMonster();
                     break;
             }
             spawnTimer = initSpawnTimer;
@@ -174,6 +177,8 @@ public class wallManager : MonoBehaviour
                     wallsHoldera[indexWallsa].gameObject.transform.position = initWallSpawna;
                     wallsHoldera[indexWallsa].gameObject.GetComponent<wallBehavior>().changeActive();
                     spawned = true;
+
+                    //Scanner.addToQueue(wallsHoldera[indexWallsa]); //Add to the AI's view
                     break;
             }
 
@@ -203,6 +208,8 @@ public class wallManager : MonoBehaviour
                     wallsHolderb[indexWallsb].gameObject.transform.position = initWallSpawnb;
                     wallsHolderb[indexWallsb].gameObject.GetComponent<wallBehavior>().changeActive();
                     spawned = true;
+
+                    //Scanner.addToQueue(wallsHolderb[indexWallsb]); //Add to the AI's view
                     break;
             }
 
@@ -232,6 +239,8 @@ public class wallManager : MonoBehaviour
                     wallsHolderc[indexWallsc].gameObject.transform.position = initWallSpawnc;
                     wallsHolderc[indexWallsc].gameObject.GetComponent<wallBehavior>().changeActive();
                     spawned = true;
+
+                    //Scanner.addToQueue(wallsHolderc[indexWallsc]); //Add to the AI's view
                     break;
             }
 
@@ -261,6 +270,8 @@ public class wallManager : MonoBehaviour
                     wallsHolderd[indexWallsd].gameObject.transform.position = initWallSpawnd;
                     wallsHolderd[indexWallsd].gameObject.GetComponent<wallBehavior>().changeActive();
                     spawned = true;
+
+                    //Scanner.addToQueue(wallsHolderd[indexWallsd]); //Add to the AI's view
                     break;
             }
 
@@ -290,6 +301,8 @@ public class wallManager : MonoBehaviour
                     wallsHoldere[indexWallse].gameObject.transform.position = initWallSpawne;
                     wallsHoldere[indexWallse].gameObject.GetComponent<wallBehavior>().changeActive();
                     spawned = true;
+
+                    //Scanner.addToQueue(wallsHoldere[indexWallse]); //Add to the AI's view
                     break;
             }
 
@@ -322,6 +335,8 @@ public class wallManager : MonoBehaviour
                     wallsHolderMonster[indexWallsMonster].gameObject.transform.GetChild(0).GetComponent<enemyBehavior>().changeType(Random.Range(0, 2));
                     //enemyManager.singleton.getEnemy(wallsHolderMonster[indexWallsMonster]);
                     spawned = true;
+
+                    
                     break;
             }
 
@@ -347,6 +362,8 @@ public class wallManager : MonoBehaviour
                     {
                         wallsHoldera[i].gameObject.transform.position = initWallSpawna;
                         wallsHoldera[i].gameObject.GetComponent<wallBehavior>().changeActive();
+
+                        //Scanner.removeFromQueue();
                     }
                 }
                 break;
@@ -357,6 +374,8 @@ public class wallManager : MonoBehaviour
                     {
                         wallsHolderb[i].gameObject.transform.position = initWallSpawnb;
                         wallsHolderb[i].gameObject.GetComponent<wallBehavior>().changeActive();
+
+                        //Scanner.removeFromQueue();
                     }
                 }
                 break;
@@ -367,6 +386,8 @@ public class wallManager : MonoBehaviour
                     {
                         wallsHolderc[i].gameObject.transform.position = initWallSpawnc;
                         wallsHolderc[i].gameObject.GetComponent<wallBehavior>().changeActive();
+
+                        //Scanner.removeFromQueue();
                     }
                 }
                 break;
@@ -377,6 +398,8 @@ public class wallManager : MonoBehaviour
                     {
                         wallsHolderd[i].gameObject.transform.position = initWallSpawnd;
                         wallsHolderd[i].gameObject.GetComponent<wallBehavior>().changeActive();
+
+                        //Scanner.removeFromQueue();
                     }
                 }
                 break;
@@ -387,6 +410,8 @@ public class wallManager : MonoBehaviour
                     {
                         wallsHoldere[i].gameObject.transform.position = initWallSpawne;
                         wallsHoldere[i].gameObject.GetComponent<wallBehavior>().changeActive();
+
+                        //Scanner.removeFromQueue();
                     }
                 }
                 break;
@@ -400,6 +425,7 @@ public class wallManager : MonoBehaviour
                         wallsHolderMonster[i].gameObject.transform.position = initWallSpawnMonster;
                         wallsHolderMonster[i].gameObject.GetComponent<monsterWall>().changeActive();
 
+                        //Scanner.removeFromQueue();
                     }
                 }
                 break;
